@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+    <script>
+
+    navigator.mediaDevices.getUserMedia (
+    // constraints - only audio needed for this app
+    {
+       audio: true
+    })
+
+    // Success callback
+    .then(function(stream) {
+
+var mediaRecorder = new MediaRecorder(stream);
+
+    });
+
+
+
+
+
+
+    </script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+  <script src='https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script src="scripts/WavAudioEncoder.js"></script>
+
+  <script src="diff_match_patch.js"></script>
+
+  <script type="text/javascript">
+
+    function getDifferentWords( fraseCorreta , fraseEscutada ){
+        var defaultWords = fraseCorreta.split(" ");
+        var testWords = fraseEscutada.split(" ");
+        var result = 0;
+
+        var tamanho = fraseCorreta.trim().split(/\s+/).length;
+
+        for(var i = 0; i < tamanho; i++){
+          if(defaultWords[i] != testWords[i]){
+            result++;
+          }
+        }
+
+        return result;
+    }
+
+    var frases = (function() {
+        var json = null;
+        $.ajax({
+            'async': false,
+            'global': false,
+            'url': "frases.json",
+            'dataType': "json",
+            'success': function (data) {
+                json = data;
+            }
+        });
+        return json;
+    })();
+
+    console.log(frases);
+
+    let matched = false;
+    let currentPageNr;
+    let currentPageTxt;
+    let currentPagePercent;
+
+    currentPageTxt = "teste";//frases.pages.number23[0].toLowerCase();
+    currentPagePercent = frases.pages.number23[1];
+
+    console.log(currentPageTxt);
+    console.log(currentPagePercent);
+
+
+    // We need to check if the browser supports WebSockets
+    if ("WebSocket" in window) {
+        // Before we can connect to the WebSocket, we need to start it in Processing.
+        var ws = new WebSocket("ws://localhost:1337/p5websocket");
+    } else {
+        // The browser doesn't support WebSocket
+        alert("WebSocket NOT supported by your Browser!");
+    }
+    // Now we can start the speech recognition
+    // Supported only in Chrome
+    // Once started, you need to allow Chrome to use the microphone
+    var recognition = new webkitSpeechRecognition();
+    // Be default, Chrome will only return a single result.
+    // By enabling "continuous", Chrome will keep the microphone active.
+    recognition.continuous = false;
+    recognition.lang = "pt-PT";
+
+    recognition.onstart = function() {
+      console.log("1");
+
+    }
+
+    recognition.onspeechstart = function() {
+
+      ws.send("start");
+
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          const mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.start();
+
+          const audioChunks = [];
+          mediaRecorder.addEventListener("dataavailable", event => {
+            audioChunks.push(event.data);
+          });
+
+          mediaRecorder.addEventListener("stop", () => {
+            const audioBlob = new Blob(audioChunks);
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            encoder = new WavAudioEncoder(44, 2);
+            encoder.encode(audioChunks);
+            const audiowav = encoder.finish();
+            if(matched){
+              //audio.play();
+              //ws.send(audio);
+              console.log(audioUrl);
+              matched = false;
+            }
+          });
+
+          recognition.onspeechstart = function() {
+
+            ws.send("stop");
+
+          }
+
+          recognition.onresult = function(event) {
+              // Get the current result from the results object
+              var transcript = event.results[event.results.length-1][0].transcript;
+              // Send the result string via WebSocket to the running Processing Sketch
+
+              /*if(transcript != currentPageTxt){
+                if(getDifferentWords(currentPageTxt,transcript) === currentPagePercent);
+                console.log("YES");
+                matched = true;
+              }*/
+
+
+              if(transcript === currentPageTxt){
+                console.log("YES");
+                matched = true;
+              }
+
+              if(matched){
+                ws.send(transcript);
+              }
+
+              console.log(transcript);
+              mediaRecorder.stop();
+        }
+    });
+    }
+
+
+    // Start the recognition
+    recognition.start();
+
+    // Restart the recognition on timeout
+    recognition.onend = function(){
+      console.log("2");
+      recognition.start();
+    }
+
+  </script>
+</head>
+<body>
+
+  <div id="container">
+
+      <video autoplay></video>
+      <button>Take snapshot</button>
+      <canvas></canvas>
+
+  </div>
+
+
+  <script>
+
+    /*
+     *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
+     *
+     *  Use of this source code is governed by a BSD-style license
+     *  that can be found in the LICENSE file in the root of the source
+     *  tree.
+     */
+
+    'use strict';
+
+    // Put variables in global scope to make them available to the browser console.
+    var video = document.querySelector('video');
+    var canvas = window.canvas = document.querySelector('canvas');
+    canvas.width = 480;
+    canvas.height = 360;
+
+    var button = document.querySelector('button');
+    button.onclick = function() {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+
+      canvas.getContext('2d').
+        drawImage(video, 270, 300, 30, 30, 0, 0, canvas.width, canvas.height);
+
+        canvas.getContext("2d").beginPath();
+        canvas.getContext("2d").lineWidth="1";
+        canvas.getContext("2d").strokeStyle="red";
+        canvas.getContext("2d").rect(270,300,30,30);
+        canvas.getContext("2d").stroke();
+
+        Tesseract.recognize(canvas, {
+          lang: 'por'
+        }).then(function(result){
+          console.log(result);
+          console.log("çakhçafsh");
+        });
+
+    };
+
+    var constraints = {
+      audio: false,
+      video: true
+    };
+
+    function handleSuccess(stream) {
+      window.stream = stream; // make stream available to browser console
+      video.srcObject = stream;
+    }
+
+    function handleError(error) {
+      console.log('navigator.getUserMedia error: ', error);
+    }
+
+    navigator.mediaDevices.getUserMedia(constraints).
+        then(handleSuccess).catch(handleError);
+
+  </script>
+
+</body>
+</html>

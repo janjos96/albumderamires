@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/2.0.5/wavesurfer.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="js/reimg.js"></script>
+  <style>
+  img {
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+  }
+
+  </style>
+
+
+
+<div id="waveform"></div>
+
+
+<script>
+
+
+setInterval(function(){
+
+
+  wavesurfer.load('processingEDGE/myrecording.wav');
+
+  setTimeout(function(){
+  //down(0);
+  }, 3000);
+
+
+}, 5000);
+
+var i = 0;
+
+ var wavesurfer = WaveSurfer.create({
+     container: '#waveform',
+     waveColor: 'blue',
+     progressColor: 'purple',
+
+ });
+
+
+
+ wavesurfer.load('myrecording.wav');
+
+setTimeout(function(){
+down(0);
+}, 3000);
+
+
+function down(i){
+
+  c = document.getElementsByTagName("canvas")[i];
+  var png = ReImg.fromCanvas(c).toPng();
+  ReImg.fromCanvas(c).downloadPng();
+
+
+}
+
+
+</script>
+</body>
+</html>
