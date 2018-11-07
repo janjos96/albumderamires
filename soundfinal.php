@@ -174,7 +174,7 @@
 </head>
 <body>
 
-  <div id="container">
+  <!-- <div id="container">
 
       <video autoplay></video>
       <button>Take snapshot</button>
@@ -284,7 +284,7 @@
 
   </script>
 
-  <div id="outputDiv">empty</div>
+  <div id="outputDiv">empty</div>-->
 
 </body>
 </html>
