@@ -59,11 +59,11 @@
     let matched = false;
     let currentPageNr = 0;
     let tempNr;
-    let currentPageTxt
+    let currentPageTxt = "pormenor de deus foto de arquivo";
     let currentPagePercent;
     let ocrresult;
-    let currentPageJsonNumber;
-    let currentPageKwNumber;
+    let currentPageJsonNumber = "number2";
+    let currentPageKwNumber = 4;
     const possiblepageslist = ["1","2","3","4","5","6","7","8","9","10","11","13","14","15","16","17","18","19","20","21","22"];
     let pageActive = false;
 
