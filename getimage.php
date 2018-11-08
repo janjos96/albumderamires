@@ -51,6 +51,8 @@
     })();
 
 
+console.log(frases);
+
     var a = frases.pages[pageJsonNr].split(" ");
 
     function getImage(key){
