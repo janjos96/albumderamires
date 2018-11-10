@@ -59,10 +59,12 @@
 
             $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
             {
+                content_type: "1",
+                is_commons: "true",
                 tags: key,
                 tagmode: "all",
-                format: "json",
-                is_commons: "true"
+                format: "json"
+                
             },
 
             function(data) {
