@@ -75,7 +75,7 @@
 
     var transmissionCounter = 0;
 
-    const possiblepageslist = ["1","2","3","4","5","6","7","8","9","10","11","13","14","15","16","17","18","19","20","21","22"];
+    //const possiblepageslist = ["1","2","3","4","5","6","7","8","9","10","11","13","14","15","16","17","18","19","20","21","22"];
     let pageActive = localStorage.getItem("pageActive");
 
     // We need to check if the browser supports WebSockets
@@ -236,6 +236,20 @@
 
 
     } else if(pageActive == 1 && tempNr == 2){
+
+      currentPageNr = tempNr;
+      localStorage.setItem("pageActive",0);
+
+      currentPageJsonNumber = "number"+currentPageNr;
+
+      currentPageTxt = frases.pages[currentPageJsonNumber][0].toLowerCase();
+
+      currentPageKwNumber = keywords.pages[currentPageJsonNumber].split(" ").length;
+
+      console.log(currentPageTxt);
+      console.log(currentPageKwNumber);
+
+    }  else if(pageActive == 1 && tempNr == 3){
 
       currentPageNr = tempNr;
       localStorage.setItem("pageActive",0);
