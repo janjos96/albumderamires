@@ -63,13 +63,13 @@
     })();
 
     let matched = false;
-    let currentPageNr = 0;
+    let currentPageNr = 2;
     let tempNr;
-    let currentPageTxt;
+    let currentPageTxt = "pormenor de deus foto de arquivo";
     let currentPagePercent;
     let ocrresult;
-    let currentPageJsonNumber;
-    let currentPageKwNumber;
+    let currentPageJsonNumber = "number2";
+    let currentPageKwNumber = 4;
     let samepageActivated = false;
     let lastActivatedPage;
 
