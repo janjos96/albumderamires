@@ -147,8 +147,7 @@ void draw() {
 }
 
 void maskImage(PImage img, PImage img2) {
- checkImage(img);
-  checkImage(img2);
+  
  pgMask.beginDraw();
  pgMask.image(detectEdges(img),0,0);
  pgMask.filter(THRESHOLD,0.8);
@@ -317,30 +316,4 @@ void soundDeleter() {
       if (f.exists()) {
         f.delete();
       }
-}
-
-color c,c3;
-void checkImage(PImage img){
- 
-  loadPixels();
- img.loadPixels();
- 
-c3 = 0;
-  for (int x = 0; x < width; x++) {
-    for (int y = 0; y < height; y++) {
-      int loc = x+y*width;
-
-     
-      c = color(img.get(x,y));
-     
-     if(  img.get(x+1, y+1) == c &&  img.get(x-1, y-1) == c &&  img.get(x, y-1) == c &&  img.get(x-1, y) == c&&  img.get(x, y+1) == c &&  img.get(x+1, y) == c){    
-       pixels[loc] = color(255/4);
-      
-     }
-  
-     
-    }
-  }
-  updatePixels();
-
 }
