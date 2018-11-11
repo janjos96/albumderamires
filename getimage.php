@@ -61,6 +61,7 @@ console.log(frases);
 
             $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
             {
+                content_type: 1,
                 tags: key,
                 tagmode: "all",
                 format: "json",

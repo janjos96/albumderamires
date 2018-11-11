@@ -57,8 +57,8 @@ int counter = 0;
 
 
 void setup() {
-  
-  size(1000,1080);
+   fullScreen();
+  //size(1000,1080);
   background(0);
   
   imageDeleter();
@@ -113,7 +113,7 @@ void draw() {
    if(lineDrawer) {
      background(0);
      stroke(255);
-     linhas();
+     
    }
    if (init) {
       player.play();
@@ -147,7 +147,7 @@ void draw() {
 }
 
 void maskImage(PImage img, PImage img2) {
-  
+
  pgMask.beginDraw();
  pgMask.image(detectEdges(img),0,0);
  pgMask.filter(THRESHOLD,0.8);
@@ -274,21 +274,7 @@ void shuffleArray(int[] array) {
   
 }
 
-void linhas() {
 
-  for (int i = 0; i < player.bufferSize() - 1; i++)
-  {
-    float x1 = map( i, 0, player.bufferSize(), (width/2)-300, (width/2)+300 );
-    float x2 = map( i+1, 0, player.bufferSize(), (width/2)-300, (width/2)+300 );
-    line( x1, (height/2)-75 + player.left.get(i)*50, x2, (height/2)-75 + player.left.get(i+1)*50 );
-    line( x1, (height/2)+75 + player.right.get(i)*50, x2, (height/2)+75 + player.right.get(i+1)*50 );
-  }
-
-  /*// draw a line to show where in the song playback is currently located
-  float posx = map(player.position(), 0, player.length(), 0, width);
-  stroke(0, 200, 0);
-  line(posx, 0, posx, height);*/
-}
 
 void imageDeleter() {
   
