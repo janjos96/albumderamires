@@ -63,13 +63,13 @@
     })();
 
     let matched = false;
-    let currentPageNr = 2;
+    let currentPageNr = 0;
     let tempNr;
-    let currentPageTxt = "pormenor de deus foto de arquivo";
+    let currentPageTxt;
     let currentPagePercent;
     let ocrresult;
-    let currentPageJsonNumber = "number2";
-    let currentPageKwNumber = 4;
+    let currentPageJsonNumber;
+    let currentPageKwNumber;
     let samepageActivated = false;
     let lastActivatedPage;
 
@@ -250,6 +250,20 @@
       console.log(currentPageKwNumber);
 
     }  else if(pageActive == 1 && tempNr == 3){
+
+      currentPageNr = tempNr;
+      localStorage.setItem("pageActive",0);
+
+      currentPageJsonNumber = "number"+currentPageNr;
+
+      currentPageTxt = frases.pages[currentPageJsonNumber][0].toLowerCase();
+
+      currentPageKwNumber = keywords.pages[currentPageJsonNumber].split(" ").length;
+
+      console.log(currentPageTxt);
+      console.log(currentPageKwNumber);
+
+    }  else if(pageActive == 1 && tempNr == 4){
 
       currentPageNr = tempNr;
       localStorage.setItem("pageActive",0);
