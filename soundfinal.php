@@ -12,6 +12,12 @@
 
   <script type="text/javascript">
 
+  localStorage.setItem("pagetest", 0);
+
+  console.log(localStorage.getItem("pagetest"));
+
+  localStorage.setItem("pageActive", 0);
+
     function getDifferentWords( fraseCorreta , fraseEscutada ){
         var defaultWords = fraseCorreta.split(" ");
         var testWords = fraseEscutada.split(" ");
@@ -57,15 +63,23 @@
     })();
 
     let matched = false;
-    let currentPageNr = 0;
+    let currentPageNr = 2;
     let tempNr;
     let currentPageTxt = "pormenor de deus foto de arquivo";
     let currentPagePercent;
     let ocrresult;
     let currentPageJsonNumber = "number2";
     let currentPageKwNumber = 4;
+<<<<<<< HEAD
+=======
+    let samepageActivated = false;
+    let lastActivatedPage;
+
+    var transmissionCounter = 0;
+
+>>>>>>> janjos
     const possiblepageslist = ["1","2","3","4","5","6","7","8","9","10","11","13","14","15","16","17","18","19","20","21","22"];
-    let pageActive = false;
+    let pageActive = localStorage.getItem("pageActive");
 
     // We need to check if the browser supports WebSockets
     if ("WebSocket" in window) {
@@ -128,7 +142,8 @@
                 matched = true;
               }
 
-              if(matched){
+              if(matched && !samepageActivated){
+                transmissionCounter++;
                 ws.send("1000");
                 window.open("getimage.php?pagenr="+currentPageJsonNumber+"&imagesqtt="+currentPageKwNumber, '_blank');
                 //ws.send("start");
@@ -173,6 +188,79 @@
   </script>
 </head>
 <body>
+
+
+  <!-- Escrever aqui o código do NFC
+
+  USAR ISTO
+
+
+  currentPageNr = tempNr
+  currentPageJsonNumber = "number"+currentPageNr;
+
+  currentPageTxt = frases.pages[currentPageJsonNumber][0].toLowerCase();
+
+  currentPageKwNumber = keywords.pages[currentPageJsonNumber].split(" ").length;
+
+  pageActive = true;
+
+  console.log(pageActive);
+  console.log(currentPageTxt);
+  console.log(currentPageKwNumber);
+  }
+  } else if (pageActive) {
+  pageActive=false;
+  currentPageTxt = null;
+  currentPageNr = null;
+  currentPageKwNumber = null;
+
+ -->
+
+<script>
+
+  setInterval(function(){
+
+    pageActive = localStorage.getItem("pageActive");
+    tempNr = localStorage.getItem("pagetest");
+
+    if(pageActive == 1 && tempNr == 1){
+
+      currentPageNr = tempNr;
+      localStorage.setItem("pageActive",0);
+
+      currentPageJsonNumber = "number"+currentPageNr;
+
+      currentPageTxt = frases.pages[currentPageJsonNumber][0].toLowerCase();
+
+      currentPageKwNumber = keywords.pages[currentPageJsonNumber].split(" ").length;
+
+      console.log(currentPageTxt);
+      console.log(currentPageKwNumber);
+
+
+    } else if(pageActive == 1 && tempNr == 2){
+
+      currentPageNr = tempNr;
+      localStorage.setItem("pageActive",0);
+
+      currentPageJsonNumber = "number"+currentPageNr;
+
+      currentPageTxt = frases.pages[currentPageJsonNumber][0].toLowerCase();
+
+      currentPageKwNumber = keywords.pages[currentPageJsonNumber].split(" ").length;
+
+      console.log(currentPageTxt);
+      console.log(currentPageKwNumber);
+
+    }
+
+  },1000);
+
+
+
+</script>
+
+
 
   <!-- <div id="container">
 
@@ -282,9 +370,10 @@
         }
 
 
-  </script>
+  </script>-->
 
-  <div id="outputDiv">empty</div>-->
+  <div id="outputDiv">empty</div>
+
 
 </body>
 </html>
